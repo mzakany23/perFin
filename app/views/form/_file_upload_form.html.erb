@@ -1,0 +1,6 @@
+<%= form_tag('form/file_upload', multipart: true) do %>
+
+<%= file_field_tag(:file) %> <br>
+
+<%= submit_tag("Upload File") %>
+<% end %>
