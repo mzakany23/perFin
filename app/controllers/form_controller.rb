@@ -1,76 +1,67 @@
 
+require 'date'
+require 'csv'
+
 class FormController < ApplicationController
-  @@word_list = ['ELECTRONIC']
+  WORDLIST = ['ELECTRONIC']
+
+  #two variables that are used in the view
+  # 1. @grouped_labeled_transactions is the variable that carries an array of values per each word
+  # 2. @sums is the variable for the @grouped_labeled_transactions amounts: key value 
 
   def index
 
   end
 
   def file_upload
-  	@file = params[:file]
-
-    @rows = {
-      found:  [],
-      unfound: []
+  	file = params[:file]
+    rows = {
+      labeled_transaction:  [],
+      unlabeled_transaction: []
     }
+    @sums = {}
 
-    File.foreach(@file.path) do |line|
+    WORDLIST.each do |word|
+      @sums[word.to_sym]
+    end
+
+    CSV.foreach(file.path, headers: true) do |row|
       word_found = false
+      row_hash << row.to_hash 
+      formatted_row = {
+        date: Date.parse(row_hash[:date]),
+        transaction: row_hash[:description],
+        amount: row_hash[:amount].to_f
+      }
 
-      @@word_list.each do |word|
-        if line.include?(word)
-          date = /(?<Month>\d{1,2})\D(?<Day>\d{2})\D(?<Year>\d{4})/.match(line).to_s
-          transaction = /(?<transaction>)#{word}/.match(line).to_s
-          amount =/-*(?<dollars>\d+)\.(?<cents>\d+)/.match(line).to_s.to_f.round(2)
-
-          @rows[:found] << {
-            date: date,
-            transaction: transaction,
-            amount: amount
-          }
-
+      WORDLIST.each do |word|
+        if row_hash[:description].include?(word)
+          rows[:labeled_transaction] << formatted_row
           word_found = true
         end
       end
 
       if !word_found
-        date = /(?<Month>\d{1,2})\D(?<Day>\d{2})\D(?<Year>\d{4})/.match(line).to_s
-        transaction = /(?<Middle>)".*"/.match(line).to_s
-        amount =/-*(?<dollars>\d+)\.(?<cents>\d+)/.match(line).to_s.to_f.round(2)  
-        
-        @rows[:unfound] << {
-          date: date,
-          transaction: transaction,
-          amount: amount
-        }
+        rows[:unlabeled_transaction] << formatted_row
       end
     end
 
-    @found = @rows[:found].sort_by{|a,b,c| a[:transaction]}
-    @unfound = @rows[:unfound].sort_by{|a,b,c| a[:transaction]}
-    @sorted_found = sort_file_upload(@@word_list,@found)
-  
-      
+    labeled_transaction = rows[:labeled_transaction].sort_by{|a,b,c| a[:transaction]}
+    @unlabeled_transaction = rows[:unlabeled_transaction].sort_by{|a,b,c| a[:transaction]}
+        
     render 'test_view'
   end
 
-  def sort_file_upload(list,transaction)
-    @sorted_hash = {}
-    @arr = @sorted_hash
+  def grouped_labeled_transactions(word_list,labeled_transactions)
+    @grouped_labeled_transactions = {}
+    word_list.each do |word|
+      key = word.to_sym
+      grouped_labeled_transactions[key]= []
 
-    list.each do |word|
-      @arr[word] = []
-      transaction.each do |trans|
-        if trans[:transaction] == word
-          @arr[word] << {
-            date: trans[:date],
-            transaction: trans[:transaction],
-            amount: trans[:amount].to_s.to_f.round(2)
-          }
-        end
+      labeled_transactions.each do |labeled_transaction|
+        grouped_labeled_transactions[key] << labeled_transaction if labeled_transaction[:transaction].include?(word)
       end
     end
-    return @sorted_hash
   end
 
 

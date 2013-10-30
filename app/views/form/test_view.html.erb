@@ -3,43 +3,12 @@
 
 	<div class="left-side">
 	<h1>Found Transactions: </h1>
-		--------------------------------------------------------------------------------------- <br>
-	<% total_expense = 0 %>
-	<% @sorted_found.each do |word, trans| %>
-	<% word_expense = 0 %>
-	<h2>Searching for: <%= word %> </h2>
-		<% trans.each do |line| %>
-		<% word_expense += line[:amount] %>
-		<% total_expense += line[:amount] %>
-			Date: <%= line[:date] %> <br>
-			Transaction: <%= line[:transaction] %> <br>
-			Amount: $<%= line[:amount] %> <br> <br>
-		<% end %>
-		--------------------------------------------------------------------------------------- <br>
-		Total <%= word %>: $<%= word_expense.round(2) %> <br>
-		--------------------------------------------------------------------------------------- <br> <br>
-	<% end %>
-	--------------------------------------------------------------------------------------- <br>
-	Total Expense Balance: $<%= total_expense.round(2) %>
-	<br>
-	--------------------------------------------------------------------------------------- <br>
+		
 
-	<br>
 </div>
 
 <div class="right-side">
 	<h1>Unclassified Transactions: </h1>
-	<% total_unclassified = 0 %>
-		<% @unfound.each do |line| %>
-		Date: <%= line[:date] %> <br>
-		Transaction: <%= line[:transaction] %> <br>
-		Amount: $<%= line[:amount] %> <br>
-		<% total_unclassified += line[:amount] %> 
-		--------------------------------------------------------------------------------------- <br>
-		<% end %>
-		Total Unclassified: $<%= total_unclassified.round(2) %>
-
-		<br>
-
+	
 </div>
 
