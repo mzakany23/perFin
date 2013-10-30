@@ -73,23 +73,5 @@ class FormController < ApplicationController
     return @sorted_hash
   end
 
-  def word_list
-    # @word_list = []
-    # word = params[:word]
-    # @word_list.push(word)
-
-    # render 'test_word_list'
-  end
-
-  def add_word
-  end
-
-  def add_multiple_words
-    @temp_wordlist = []
-    words = params[:words]
-    @temp_wordlist.push(words.upcase)
-
-    render 'test_word_list'
-  end
 
 end
