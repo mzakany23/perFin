@@ -4,6 +4,8 @@ group :development do
   gem "better_errors"
 end
 
+gem 'awesome_print'
+
 gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:

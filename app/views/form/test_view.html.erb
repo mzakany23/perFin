@@ -3,12 +3,39 @@
 
 	<div class="left-side">
 	<h1>Found Transactions: </h1>
-		
-
+		<% total_classified = 0 %>
+		<% @grouped_transactions.each do |word, trans| %>	
+		<% expense = 0 %>
+			<% trans.each do |grouped_trans| %>
+				Date: <%= grouped_trans[:date] %> <br>
+				Transaction: <%= grouped_trans[:transaction] %> <br>
+				Amount: $<%= grouped_trans[:amount] %> <br> <br>
+				<% expense += grouped_trans[:amount] %>
+				<% total_classified += grouped_trans[:amount] %>
+			<% end %>
+			----------------------------------------------------------------- <br>
+			Total <%= word %>: $<%= expense.round(2) %> <br>
+			----------------------------------------------------------------- <br> <br>
+		<% end %>
+			----------------------------------------------------------------- <br>
+			Total Classified Expense: $<%= total_classified.round(2) %> <br>
+			----------------------------------------------------------------- <br> <br>
+	
 </div>
 
 <div class="right-side">
+	<% total_unclassified = 0 %>
 	<h1>Unclassified Transactions: </h1>
-	
+	<% @unlabeled_transaction.each do |unclass| %>
+		Date: <%= unclass[:date] %> <br>
+		Transaction: <%= unclass[:transaction] %> <br>
+		Amount: $<%= unclass[:amount] %> <br><br>
+		<% total_unclassified += unclass[:amount] %>
+	<% end %>
+
+			----------------------------------------------------------------- <br>
+					Total Unclassified Expense: $<%= total_unclassified.round(2) %> <br>
+			----------------------------------------------------------------- <br> <br>
+
 </div>
 

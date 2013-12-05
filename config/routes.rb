@@ -1,10 +1,15 @@
 Airpair::Application.routes.draw do
-  get "form/index"
-  get "form/file_upload"
-  post "form/file_upload"
-  post "form/word_list"
-  post "form/add_multiple_words"
-  get "form/test_view"
+
+  get "add_words_to_list/add"
+
+  # get "form/file_upload"
+  match '/form', to: 'form#index', via: :get
+  match '/form', to: 'form#file_upload', via: :post
+  # post "form/file_upload"
+  # post "form/add_multiple_words"
+  # get "form/test_view"
+
+
 
   root :to => 'form#index'
 

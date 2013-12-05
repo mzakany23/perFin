@@ -1,9 +1,23 @@
-<h1>This is a test page for components</h1>
+<div>
+	<h1>This is a test page for components: </h1>
 <hr>
 <%= render 'file_upload_form' %>
 <hr>
-<h1>JQuery Form Test: </h1>
-<br>
+</div>
+
+
+<!-- <div>
+	<h1>Enter words: </h1>
+	<hr>
+		<%= form_tag('/form', method: 'add_word_to_list') do %>
+			<%= label_tag(:q, "Upload Words:") %>
+			<%= text_field_tag(:upload) %>
+			<%= submit_tag("Upload Word To List") %>
+			
+		<% end %>
+	<hr>
+</div> -->
+
 
 
 
